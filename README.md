@@ -29,11 +29,18 @@ Upon running through the steps you will see Defender for Cloud, Defender for Ser
 
 Defender for Cloud alert of a Log4J vulnerable container image
 --------------------------------------------------------------
+
 ![image](https://user-images.githubusercontent.com/9025598/148591135-a94a39d0-9f23-4d8f-83a0-4d9a3cd6a1f1.png)
 
 Defender for Cloud AKS Cluster and Image recommendations
 ---------------------------------------------------------
+
 ![image](https://user-images.githubusercontent.com/9025598/148594118-9d41c061-7611-4ccd-8742-89c0e2f12659.png)
+
+
+Defender for Cloud Alert overview
+----------------------------------
+
 
 
 
