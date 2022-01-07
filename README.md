@@ -43,11 +43,16 @@ Defender for Cloud Alert overview
 
 ![image](https://user-images.githubusercontent.com/9025598/148595038-1fea7398-9813-4960-acca-4ffd80105b25.png)
 
-Security Alert detected on AKS cluster
+Security Alert detected on AKS Cluster
 ---------------------------------------
 ![image](https://user-images.githubusercontent.com/9025598/148595407-ec035078-b211-496f-ab57-ca95a7065b13.png)
 
-Security Alert on example 
+Security Alert Detected on AKS Cluster
+--------------------------------------
+
+![image](https://user-images.githubusercontent.com/9025598/148595609-8c01ffab-69b7-42d9-a5d7-386e287e0651.png)
+
+
 
 
 
