@@ -41,6 +41,11 @@ Defender for Cloud AKS Cluster and Image recommendations
 Defender for Cloud Alert overview
 ----------------------------------
 
+![image](https://user-images.githubusercontent.com/9025598/148595038-1fea7398-9813-4960-acca-4ffd80105b25.png)
+
+Security Alert detected on AKS cluster
+---------------------------------------
+
 
 
 
