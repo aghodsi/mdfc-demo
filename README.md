@@ -6,23 +6,20 @@ Description
 This demo script allows you to execute a Log4J exploit of a vulnerable container with the aim to exfiltrate a sensitive file located on another server. The lateral movement from the exploited container to the target servers will be performed by leveraging a vulnerability in the nhttpd webservice.
 The goal of this script is to provide a step-by-step guide to perform an attack and demonstrate how; Defender for Cloud and Microsoft Sentinel can detect and alert on these activities.
 
+![image](https://user-images.githubusercontent.com/9025598/148650778-d15ccfe4-40cf-42fc-a9d3-4526bf1235ec.png)
 
 Requirements
 ------------
+To follow the steps within the commands.txt file it is required to create the following resources within your Azure subscription:
+•	1X Virtual Network with three subnets clients/containers/servers
+•	3X Application Security Groups clients/containers/servers
+•	3X Network Security groups mapped to the 3 subnets and application groups
+•	2x Linux Ubuntu 20.4 VM's (one attacker "SRV-UB-01" and victim "SRV-UB-02")
+•	1x ACR (Azure Container Registry)
+•	1x AKS cluster with a connection to the created ACR
+The AKS cluster must be configured using an Azure CNI network configuration and mapped to the container subnet. See below example screenshot:
 
-This demo requires the following resources to be create in your Azure subscription:
-1X Virtual Network with three subnets clients/containers/servers
-3X Application Security Groups clients/containers/servers
-3X Network Security groups mapped to the 3 subnets and application groups
-2x Linux Ubuntu 20.4 VM's (one attacker "SRV-UB-01" and victim "SRV-UB-02")
-1x ACR
-1x AKS cluster with a connection to the created ACR with CIDR network configuration. The AKS cluster should use the container subnet
 
--For security reasons make sure both Ubuntu Linux VM are only accessible via SSH from your IP address
--Your subscription needs to have Defender for Cloud enabled for Servers & Containers
--Your subscription should also have Sentinel enabled with all default data connectors: Defender for Cloud, M365D, Azure Activity, Azure AD etc. enabled
-
-Once the default requirements are met please proceed with the steps outlined in the commands.txt file
 
 Example results
 ---------------
