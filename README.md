@@ -17,8 +17,12 @@ To follow the steps within the commands.txt file it is required to create the fo
 •	2x Linux Ubuntu 20.4 VM's (one attacker "SRV-UB-01" and victim "SRV-UB-02")
 •	1x ACR (Azure Container Registry)
 •	1x AKS cluster with a connection to the created ACR
+
 The AKS cluster must be configured using an Azure CNI network configuration and mapped to the container subnet. See below example screenshot:
 
+![image](https://user-images.githubusercontent.com/9025598/148650803-fe981310-a502-4809-922f-ab616b5285ef.png)
+
+The application security groups should be used to block traffic from the client to server subnet. An example NSG rule is show below:
 
 
 Example results
