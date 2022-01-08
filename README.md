@@ -50,7 +50,7 @@ Upon running through the steps, you will see Defender for Cloud and Microsoft Se
 Defender for Cloud alert of a Log4J vulnerable container image
 --------------------------------------------------------------
 
-![image](https://user-images.githubusercontent.com/9025598/148591135-a94a39d0-9f23-4d8f-83a0-4d9a3cd6a1f1.png)
+<img width="1504" alt="image" src="https://user-images.githubusercontent.com/9025598/148651133-b3a6cf07-dd1c-47c7-846b-142c01e8bf1c.png">
 
 Defender for Cloud AKS Cluster and Image recommendations
 ---------------------------------------------------------
@@ -58,21 +58,18 @@ Defender for Cloud AKS Cluster and Image recommendations
 ![image](https://user-images.githubusercontent.com/9025598/148594118-9d41c061-7611-4ccd-8742-89c0e2f12659.png)
 
 
-Defender for Cloud Alert overview
+Defender for Cloud alert overview
 ----------------------------------
 
 ![image](https://user-images.githubusercontent.com/9025598/148595038-1fea7398-9813-4960-acca-4ffd80105b25.png)
 
-Security Alert detected on AKS Cluster
----------------------------------------
-![image](https://user-images.githubusercontent.com/9025598/148595407-ec035078-b211-496f-ab57-ca95a7065b13.png)
-
-Security Alert Detected on AKS Cluster
+AKS Cluster related alerts
 --------------------------------------
+![image](https://user-images.githubusercontent.com/9025598/148595407-ec035078-b211-496f-ab57-ca95a7065b13.png)
 
 ![image](https://user-images.githubusercontent.com/9025598/148595609-8c01ffab-69b7-42d9-a5d7-386e287e0651.png)
 
-Security Alert detecting reverse shell
+Detected reverse shell alerts
 --------------------------------------
 
 ![image](https://user-images.githubusercontent.com/9025598/148595822-056ce0bd-97f6-4c93-afee-70cb733d639e.png)
