@@ -60,7 +60,7 @@ Defender for Cloud alert examples
 Microsoft Sentinel & Defender for Server Overview
 --------------------------------------------------
 
-
+<img width="1033" alt="image" src="https://user-images.githubusercontent.com/9025598/148679982-641a3926-e519-47e4-8cc8-d3084a7bf6ae.png">
 
 
 
