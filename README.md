@@ -52,9 +52,10 @@ Defender for Cloud alert of a Log4J vulnerable container image
 
 
 
-Defender for Cloud AKS Cluster and Image recommendations
+Defender for Cloud alert examples
 ---------------------------------------------------------
 
+<img width="1034" alt="image" src="https://user-images.githubusercontent.com/9025598/148675313-3f99b761-e8ad-45c5-a18c-d3caed0b68ca.png">
 
 
 
