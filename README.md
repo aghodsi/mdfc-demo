@@ -50,26 +50,16 @@ Upon running through the steps, you will see Defender for Cloud and Microsoft Se
 Defender for Cloud alert of a Log4J vulnerable container image
 --------------------------------------------------------------
 
-
+<img width="1057" alt="image" src="https://user-images.githubusercontent.com/9025598/148675383-eacebad2-43f6-4878-b691-7cc9749102c8.png">
 
 Defender for Cloud alert examples
 ---------------------------------------------------------
 
 <img width="1034" alt="image" src="https://user-images.githubusercontent.com/9025598/148675313-3f99b761-e8ad-45c5-a18c-d3caed0b68ca.png">
 
+Microsoft Sentinel Incident Overview
+------------------------------------
 
-
-Defender for Cloud alert overview
-----------------------------------
-
-
-
-AKS Cluster related alerts
---------------------------------------
-
-
-Detected reverse shell alerts
---------------------------------------
 
 
 
