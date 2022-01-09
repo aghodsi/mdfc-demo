@@ -6,7 +6,7 @@ Description
 This demo script allows you to execute a Log4J exploit of a vulnerable container with the aim to exfiltrate a sensitive file located on another server. The lateral movement from the exploited container to the target servers will be performed by leveraging a vulnerability in the nhttpd webservice.
 The goal of this script is to provide a step-by-step guide to perform an attack and demonstrate how; Defender for Cloud and Microsoft Sentinel can detect and alert on these activities.
 
-<img width="1127" alt="image" src="https://user-images.githubusercontent.com/9025598/148656836-824f8e30-1362-4a6e-8da9-4f7c03616167.png">
+<img width="929" alt="image" src="https://user-images.githubusercontent.com/9025598/148679918-51ee7a58-0226-43d3-9ff2-73e49ac269f8.png">
 
 Requirements
 ------------
@@ -57,8 +57,8 @@ Defender for Cloud alert examples
 
 <img width="1034" alt="image" src="https://user-images.githubusercontent.com/9025598/148675313-3f99b761-e8ad-45c5-a18c-d3caed0b68ca.png">
 
-Microsoft Sentinel Incident Overview
-------------------------------------
+Microsoft Sentinel & Defender for Server Overview
+--------------------------------------------------
 
 
 
