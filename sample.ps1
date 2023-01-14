@@ -23,7 +23,7 @@ foreach($file in Get-ChildItem $TargetFolder)
 
 {
 $output = $file.FullName + '.enc'
-powershell -executionpolicy ByPass -File .\Encrypt-AesKey.ps1 -InFile $file.FullName -OutFile $output -Password $key
+powershell -executionpolicy ByPass -File $DownloadFolder\Encrypt-AesKey.ps1 -InFile $file.FullName -OutFile $output -Password $key
 
 }
 
