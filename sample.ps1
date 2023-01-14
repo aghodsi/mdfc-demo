@@ -46,3 +46,5 @@ foreach($file in Get-ChildItem $DownloadFolder -Recurse -filter *.ps1*)
 {
 
 Remove-Item $file.FullName
+
+}
