@@ -16,6 +16,6 @@ spec:
     spec:
       containers:
       - name: webapp
-        image: imagerepository01.azurecr.io/webapp:latest
+        image: <REPLACE_WITH_ACR:TAG>
         ports:
         - containerPort: 8080
